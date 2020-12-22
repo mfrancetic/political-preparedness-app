@@ -10,5 +10,10 @@
     </style>
 
     <!-- TODO: Add necessary styles -->
-
+    <style name="WideButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
