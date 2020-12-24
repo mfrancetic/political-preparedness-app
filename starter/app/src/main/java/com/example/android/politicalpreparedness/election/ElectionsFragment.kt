@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
+import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.repository.ElectionRepository
 
 class ElectionsFragment : Fragment() {
@@ -59,6 +61,17 @@ class ElectionsFragment : Fragment() {
                 savedElectionsAdapter.submitList(savedElections)
             }
         })
+        viewModel.navigateToVoterInfo.observe(viewLifecycleOwner, { election ->
+            if (election != null) {
+                navigateToVoterInfoFragment(election)
+                viewModel.onElectionSelectedDone()
+            }
+        })
+
+    }
+
+    private fun navigateToVoterInfoFragment(election: Election) {
+        findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id, election.division))
     }
 
     private fun setupRecyclerViewAdapters() {
@@ -74,5 +87,4 @@ class ElectionsFragment : Fragment() {
     }
 
     //TODO: Refresh adapters when fragment loads
-
 }
