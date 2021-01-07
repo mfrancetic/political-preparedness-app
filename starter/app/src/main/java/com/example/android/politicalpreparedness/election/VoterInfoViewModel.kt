@@ -3,8 +3,13 @@ package com.example.android.politicalpreparedness.election
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.network.models.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
@@ -12,6 +17,10 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     private val _voterInfo = MutableLiveData<VoterInfoResponse>()
     val voterInfo: LiveData<VoterInfoResponse>
         get() = _voterInfo
+
+    private val _election = MutableLiveData<Election>()
+    val election: LiveData<Election>
+        get() = _election
 
     private val _administrationBody = MutableLiveData<AdministrationBody>()
     val administrationBody: LiveData<AdministrationBody>
@@ -30,7 +39,11 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     fun getVoterInfo(args: VoterInfoFragmentArgs) {
         val electionId = args.argElectionId
         val division = args.argDivision
-        getDummyData()
+        viewModelScope.launch {
+            dataSource.getElectionById(electionId).collect { election ->
+                _election.value = election
+            }
+        }
     }
 
     private fun getDummyData() {
@@ -60,16 +73,23 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
 
     //TODO: Add var and methods to save and remove elections to local database
 
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
     /**
      * Hint: The saved state can be accomplished in multiple ways. It is directly related to how
      * elections are saved/removed from the database.
      */
     fun followUnfollowElection() {
-        val isSaved = voterInfo.value?.election?.isSaved
-        if (isSaved != null) {
-            voterInfo.value?.election?.isSaved = !isSaved
+        if (election.value != null) {
+            val isSaved: Boolean = election.value!!.isSaved
+            election.value!!.isSaved = !isSaved
+            viewModelScope.launch {
+                updateElectionInDatabase()
+            }
+        }
+    }
+
+    private suspend fun updateElectionInDatabase() {
+        withContext(Dispatchers.IO) {
+            dataSource.insert(election.value!!)
         }
     }
 }

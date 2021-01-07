@@ -13,6 +13,7 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 
 class VoterInfoFragment : Fragment() {
@@ -32,8 +33,6 @@ class VoterInfoFragment : Fragment() {
                 R.layout.fragment_voter_info, container, false)
 
         fragmentContext = binding.address.context
-
-        //TODO: Add ViewModel values and create ViewModel
 
         dataSource = ElectionDatabase.getInstance(fragmentContext).electionDao
         viewModelFactory = VoterInfoViewModelFactory(dataSource)
@@ -58,9 +57,17 @@ class VoterInfoFragment : Fragment() {
     private fun setupObservers() {
         viewModel.voterInfo.observe(viewLifecycleOwner, { voterInfo ->
             if (voterInfo != null) {
-                updateFollowButton(voterInfo)
+
             }
         })
+
+        viewModel.election.observe(viewLifecycleOwner, { election ->
+            if (election != null) {
+                binding.election = election
+                updateFollowButton(election)
+            }
+        })
+
         viewModel.openWebUrl.observe(viewLifecycleOwner, { url ->
             if (!url.isNullOrBlank()) {
                 openWebUrl(url)
@@ -86,9 +93,9 @@ class VoterInfoFragment : Fragment() {
         activity?.startActivity(openWebUrlIntent)
     }
 
-    private fun updateFollowButton(voterInfo: VoterInfoResponse) {
+    private fun updateFollowButton(election: Election) {
         var followElectionButtonText = getString(R.string.follow_election)
-        if (voterInfo.election.isSaved) {
+        if (election.isSaved) {
             followElectionButtonText = getString(R.string.unfollow_election)
         }
         binding.followElectionButton.text = followElectionButtonText

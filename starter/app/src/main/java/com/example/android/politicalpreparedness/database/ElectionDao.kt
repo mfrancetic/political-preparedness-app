@@ -13,14 +13,17 @@ interface ElectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(elections: List<Election>)
 
-    @Query("SELECT * FROM election_table WHERE electionDay >= :today")
-    fun getUpcomingElections(today: String): Flow<List<Election>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(election: Election)
+
+    @Query("SELECT * FROM election_table")
+    fun getUpcomingElections(): Flow<List<Election>>
 
     @Query("SELECT * FROM election_table WHERE isSaved")
     fun getSavedElections(): Flow<List<Election>>
 
     @Query("SELECT * FROM election_table WHERE id = :electionId")
-    fun getElectionById(electionId: Int): Election
+    fun getElectionById(electionId: Int): Flow<Election>
 
     @Query("DELETE FROM election_table WHERE id = :electionId")
     fun deleteElectionById(electionId: Int)

@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDatabase
-import com.example.android.politicalpreparedness.network.getToday
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.repository.ElectionRepository
 import kotlinx.coroutines.flow.collect
@@ -44,7 +43,7 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
 
     private fun getUpcomingElections() {
         viewModelScope.launch {
-            database.electionDao.getUpcomingElections(getToday()).collect { elections ->
+            database.electionDao.getUpcomingElections().collect { elections ->
                 _upcomingElections.value = elections
             }
         }

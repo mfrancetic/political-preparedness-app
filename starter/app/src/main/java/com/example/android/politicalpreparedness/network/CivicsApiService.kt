@@ -3,6 +3,7 @@ package com.example.android.politicalpreparedness.network
 import com.example.android.politicalpreparedness.network.jsonadapter.ElectionAdapter
 import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
+import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import java.util.*
 
 private const val BASE_URL = "https://www.googleapis.com/civicinfo/v2/"
@@ -37,7 +39,9 @@ interface CivicsApiService {
     @GET("elections")
     fun getElectionsAsync(): Deferred<ElectionResponse>
 
-    //TODO: Add voterinfo API Call
+    @GET("voterinfo")
+    fun getVoterInfo(@Query("electionId") electionId: Int,
+                     @Query("address") address: String): Deferred<VoterInfoResponse>
 
     //TODO: Add representatives API Call
 }
