@@ -6,30 +6,72 @@ import android.location.Location
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
+import com.example.android.politicalpreparedness.election.VoterInfoViewModel
+import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener
 import java.util.Locale
 
 class DetailFragment : Fragment() {
+
 
     companion object {
         //TODO: Add Constant for Location request
     }
 
-    //TODO: Declare ViewModel
+    private lateinit var viewModel: RepresentativeViewModel
+    private lateinit var binding: FragmentRepresentativeBinding
+    private lateinit var adapter: RepresentativeListAdapter
+    private lateinit var fragmentContext: Context
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        //TODO: Establish bindings
+        viewModel = ViewModelProvider(this).get(RepresentativeViewModel::class.java)
 
-        //TODO: Define and assign Representative adapter
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
 
-        //TODO: Populate Representative adapter
+        binding.viewModel = viewModel
+        binding.address = Address("", "", "", "Alabama", "")
+        binding.lifecycleOwner = this
+
+        fragmentContext = binding.addressLine1.context
+
+        setupRecyclerViewAdapter()
+        setupObservers()
+        setupStateSpinner()
 
         //TODO: Establish button listeners for field and location search
+        return binding.root
+    }
 
+    private fun setupStateSpinner() {
+        val spinner = binding.state
+        ArrayAdapter.createFromResource(fragmentContext, R.array.states, android.R.layout.simple_spinner_dropdown_item)
+                .also { adapter ->
+                    spinner.adapter = adapter
+                }
+    }
+
+    private fun setupObservers() {
+        viewModel.representatives.observe(viewLifecycleOwner, { representatives ->
+            if (!representatives.isNullOrEmpty()) {
+                adapter.submitList(representatives)
+            }
+        })
+    }
+
+    private fun setupRecyclerViewAdapter() {
+        adapter = RepresentativeListAdapter()
+        binding.fragmentRepresentativesRecyclerView.adapter = adapter
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -46,8 +88,9 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun isPermissionGranted() : Boolean {
+    private fun isPermissionGranted(): Boolean {
         //TODO: Check if permission is already granted and return (true = granted, false = denied/other)
+        return false
     }
 
     private fun getLocation() {
@@ -66,7 +109,7 @@ class DetailFragment : Fragment() {
 
     private fun hideKeyboard() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
 }
