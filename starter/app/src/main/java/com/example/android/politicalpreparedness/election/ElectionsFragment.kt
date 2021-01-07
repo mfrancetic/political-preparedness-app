@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.election
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,6 @@ class ElectionsFragment : Fragment() {
 
     private lateinit var viewModel: ElectionsViewModel
     private lateinit var viewModelFactory: ElectionsViewModelFactory
-    private lateinit var repository: ElectionRepository
     private lateinit var binding: FragmentElectionBinding
 
     private lateinit var upcomingElectionsAdapter: ElectionListAdapter
@@ -32,8 +32,7 @@ class ElectionsFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_election, container, false)
 
-        repository = ElectionRepository(null)
-        viewModelFactory = ElectionsViewModelFactory(repository)
+        viewModelFactory = ElectionsViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ElectionsViewModel::class.java)
 
         binding.lifecycleOwner = this
