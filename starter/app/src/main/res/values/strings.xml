@@ -26,4 +26,5 @@
     <string name="location_services_disabled_snackbar">Location services must be enabled to display
         representatives using location</string>
     <string name="location_permission_not_granted">Location permission must be granted to display representatives using location</string>
+    <string name="location_must_be_in_the_us">Location must be in the US</string>
 </resources>

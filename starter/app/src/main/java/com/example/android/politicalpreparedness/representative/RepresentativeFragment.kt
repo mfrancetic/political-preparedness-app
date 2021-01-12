@@ -157,18 +157,27 @@ class DetailFragment : Fragment() {
         if (isPermissionGranted()) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 val address = location?.let { geoCodeLocation(it) }
-                viewModel.getAddressFromGeolocation(address)
-                binding.address = address
+                if (address != null) {
+                    viewModel.getAddressFromGeolocation(address)
+                    binding.address = address
+                } else {
+                    displaySnackbar(fragmentContext.getString(R.string.location_must_be_in_the_us))
+                }
             }
         }
     }
 
-    private fun geoCodeLocation(location: Location): Address {
+    private fun geoCodeLocation(location: Location): Address? {
         val geocoder = Geocoder(context, Locale.getDefault())
-        return geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
+        return addresses
                 .map { address ->
-                    Address(address.thoroughfare, address.subThoroughfare, address.locality,
-                            address.adminArea, address.postalCode)
+                    if (address.countryCode == "US") {
+                        Address(address.thoroughfare, address.subThoroughfare, address.locality,
+                                address.adminArea, address.postalCode)
+                    } else {
+                        null
+                    }
                 }
                 .first()
     }
