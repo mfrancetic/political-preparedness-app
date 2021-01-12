@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.example.android.politicalpreparedness.databinding.FragmentRepresentat
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -52,17 +54,7 @@ class DetailFragment : Fragment() {
         setupObservers()
         setupStateSpinner()
 
-        setupButtonListeners()
         return binding.root
-    }
-
-    private fun setupButtonListeners() {
-        binding.buttonLocation.setOnClickListener {
-            hideKeyboard()
-        }
-        binding.buttonSearch.setOnClickListener {
-            hideKeyboard()
-        }
     }
 
     private fun setupStateSpinner() {
@@ -76,18 +68,46 @@ class DetailFragment : Fragment() {
     private fun setupObservers() {
         viewModel.representatives.observe(viewLifecycleOwner, { representatives ->
             if (!representatives.isNullOrEmpty()) {
+                hideKeyboard()
                 adapter.submitList(representatives)
+            }
+        })
+
+        viewModel.snackbarMessage.observe(viewLifecycleOwner, { message ->
+            if (!message.isNullOrBlank()) {
+                displaySnackbar(message)
+                viewModel.snackbarMessageDone()
             }
         })
 
         viewModel.locationButtonClicked.observe(viewLifecycleOwner, { buttonClicked ->
             if (buttonClicked) {
-                if (checkLocationPermissions()) {
-                    getLocation()
+                hideKeyboard()
+                if (areLocationServicesEnabled(fragmentContext)) {
+                    if (checkLocationPermissions()) {
+                        getLocation()
+                    }
+                } else {
+                    promptUserToEnableLocationServices()
                 }
+
                 viewModel.locationRetrieved()
             }
         })
+    }
+
+    private fun areLocationServicesEnabled(fragmentContext: Context): Boolean {
+        val locationManager =
+                fragmentContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    private fun displaySnackbar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun promptUserToEnableLocationServices() {
+        viewModel.setSnackbarMessage(fragmentContext.getString(R.string.location_services_disabled_snackbar))
     }
 
     private fun setupRecyclerViewAdapter() {
@@ -100,8 +120,18 @@ class DetailFragment : Fragment() {
         if (requestCode == LOCATION_REQUEST_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLocation()
+            } else {
+                if ((areLocationServicesEnabled(fragmentContext))) {
+                    promptUserToGrantLocationPermission()
+                } else {
+                    promptUserToEnableLocationServices()
+                }
             }
         }
+    }
+
+    private fun promptUserToGrantLocationPermission() {
+        viewModel.setSnackbarMessage(fragmentContext.getString(R.string.location_permission_not_granted))
     }
 
     private fun checkLocationPermissions(): Boolean {
@@ -137,7 +167,8 @@ class DetailFragment : Fragment() {
         val geocoder = Geocoder(context, Locale.getDefault())
         return geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 .map { address ->
-                    Address(address.thoroughfare, address.subThoroughfare, address.locality, address.adminArea, address.postalCode)
+                    Address(address.thoroughfare, address.subThoroughfare, address.locality,
+                            address.adminArea, address.postalCode)
                 }
                 .first()
     }

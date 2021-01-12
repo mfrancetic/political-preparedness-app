@@ -27,10 +27,15 @@ class RepresentativeViewModel : ViewModel() {
     val locationButtonClicked: LiveData<Boolean>
         get() = _locationButtonClicked
 
+    private val _snackbarMessage = MutableLiveData<String>()
+    val snackbarMessage: LiveData<String>
+        get() = _snackbarMessage
+
     init {
         _address.value = null
         _representatives.value = null
         _locationButtonClicked.value = false
+        _snackbarMessage.value = null
     }
 
     fun onUseLocationClicked() {
@@ -49,6 +54,14 @@ class RepresentativeViewModel : ViewModel() {
 
     fun onFindMyRepresentativesClicked(address: Address) {
         getRepresentativesIfAddressValid(address)
+    }
+
+    fun setSnackbarMessage(message: String) {
+        _snackbarMessage.value = message
+    }
+
+    fun snackbarMessageDone() {
+        _snackbarMessage.value = null
     }
 
     private fun getRepresentativesIfAddressValid(address: Address) {
