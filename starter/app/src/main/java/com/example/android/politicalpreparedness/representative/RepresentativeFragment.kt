@@ -8,11 +8,14 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,8 +24,13 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.utils.ValidationTextWatcher
+import com.example.android.politicalpreparedness.utils.areAllFieldsValid
+import com.example.android.politicalpreparedness.utils.isValid
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -53,8 +61,15 @@ class DetailFragment : Fragment() {
         setupRecyclerViewAdapter()
         setupObservers()
         setupStateSpinner()
+        addTextChangedListeners()
 
         return binding.root
+    }
+
+    private fun addTextChangedListeners() {
+        binding.addressLine1EditText.addTextChangedListener(ValidationTextWatcher(fragmentContext, binding.addressLine1EditText, binding.addressLine1))
+        binding.cityEditText.addTextChangedListener(ValidationTextWatcher(fragmentContext, binding.cityEditText, binding.city))
+        binding.zipEditText.addTextChangedListener(ValidationTextWatcher(fragmentContext, binding.zipEditText, binding.zip))
     }
 
     private fun setupStateSpinner() {
@@ -92,6 +107,17 @@ class DetailFragment : Fragment() {
                 }
 
                 viewModel.locationRetrieved()
+            }
+        })
+
+        viewModel.findRepresentativesButtonClicked.observe(viewLifecycleOwner, { address ->
+            if (address != null) {
+                hideKeyboard()
+                if (areAllFieldsValid(fragmentContext, binding)) {
+                    viewModel.setAddress(address)
+                } else {
+                    viewModel.setSnackbarMessage(fragmentContext.getString(R.string.all_fields_must_be_valid))
+                }
             }
         })
     }

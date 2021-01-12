@@ -27,4 +27,7 @@
         representatives using location</string>
     <string name="location_permission_not_granted">Location permission must be granted to display representatives using location</string>
     <string name="location_must_be_in_the_us">Location must be in the US</string>
+    <string name="field_required">Field must not be empty</string>
+    <string name="zip_length_must_be_5">Zip length must be 5 digits</string>
+    <string name="all_fields_must_be_valid">All fields must be valid</string>
 </resources>

@@ -4,9 +4,11 @@
     xmlns:motion="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="address"
             type="com.example.android.politicalpreparedness.network.models.Address" />
+
         <variable
             name="viewModel"
             type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
@@ -28,63 +30,93 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/address_line_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/address_line_1"
-            android:hint="@string/address_line_1"
-            android:inputType="textPostalAddress"
-            android:text="@={address.line1}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_title" />
+            app:layout_constraintTop_toBottomOf="@id/search_title">
 
-        <EditText
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address_line_1_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/address_line_1"
+                android:hint="@string/address_line_1"
+                android:imeOptions="actionNext"
+                android:inputType="textPostalAddress"
+                android:text="@={address.line1}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/address_line_2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:autofillHints="@string/address_line_2"
-            android:hint="@string/address_line_2"
-            android:inputType="textPostalAddress"
-            android:text="@={address.line2}"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_line_1" />
+            app:layout_constraintTop_toBottomOf="@id/address_line_1">
 
-        <EditText
-            android:id="@+id/city"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address_line_2_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/address_line_2"
+                android:hint="@string/address_line_2"
+                android:imeOptions="actionNext"
+                android:inputType="textPostalAddress"
+                android:text="@={address.line2}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@id/city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/city"
-            android:hint="@string/city"
-            android:inputType="textPostalAddress"
-            android:text="@={address.city}"
             app:layout_constraintEnd_toStartOf="@id/state"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_line_2" />
+            app:layout_constraintTop_toBottomOf="@id/address_line_2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/city_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/city"
+                android:hint="@string/city"
+                android:imeOptions="actionNext"
+                android:inputType="textPostalAddress"
+                android:text="@={address.city}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
             android:id="@+id/state"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:stateValue="@{address.state}"
             android:inputType="textPostalAddress"
             app:layout_constraintBottom_toBottomOf="@id/city"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/city"
-            app:layout_constraintTop_toTopOf="@id/city" />
+            app:layout_constraintTop_toTopOf="@id/city"
+            app:stateValue="@{address.state}" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/zip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/zip"
-            android:hint="@string/zip"
-            android:inputType="number"
-            android:maxLength="5"
-            android:text="@={address.zip}"
             app:layout_constraintEnd_toEndOf="@id/city"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/city" />
+            app:layout_constraintTop_toBottomOf="@id/city">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/zip_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/zip"
+                android:hint="@string/zip"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="5"
+                android:text="@={address.zip}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/button_search"
@@ -120,7 +152,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/representative_title"
-            motion:listitem="@layout/representatives_list_item"/>
+            motion:listitem="@layout/representatives_list_item" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

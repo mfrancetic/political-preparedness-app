@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Address
-import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.representative.model.Representative
 import com.example.android.politicalpreparedness.utils.isValid
 import kotlinx.coroutines.Dispatchers
@@ -31,11 +30,16 @@ class RepresentativeViewModel : ViewModel() {
     val snackbarMessage: LiveData<String>
         get() = _snackbarMessage
 
+    private val _findRepresentativesButtonClicked = MutableLiveData<Address>()
+    val findRepresentativesButtonClicked: LiveData<Address>
+    get() = _findRepresentativesButtonClicked
+
     init {
         _address.value = null
         _representatives.value = null
         _locationButtonClicked.value = false
         _snackbarMessage.value = null
+        _findRepresentativesButtonClicked.value = null
     }
 
     fun onUseLocationClicked() {
@@ -53,6 +57,11 @@ class RepresentativeViewModel : ViewModel() {
     }
 
     fun onFindMyRepresentativesClicked(address: Address) {
+        _findRepresentativesButtonClicked.value = address
+    }
+
+    fun setAddress(address: Address) {
+        _address.value = address
         getRepresentativesIfAddressValid(address)
     }
 
