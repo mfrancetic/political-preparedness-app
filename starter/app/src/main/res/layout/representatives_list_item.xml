@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="representative"
             type="com.example.android.politicalpreparedness.representative.model.Representative" />
@@ -20,10 +21,10 @@
             android:layout_height="@dimen/representative_imageview_size"
             android:contentDescription="@string/representative_photo"
             android:src="@drawable/ic_profile"
-            app:profileImage="@{representative.official.photoUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:profileImage="@{representative.official.photoUrl}" />
 
         <TextView
             android:id="@+id/representative_title"
@@ -31,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_padding"
-            android:text="@{representative.official.name}"
+            android:text="@{representative.office.name}"
             app:layout_constraintStart_toEndOf="@id/representative_image"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="U.S. Senator" />
@@ -61,8 +62,7 @@
             android:contentDescription="@string/see_representative_twitter_page"
             android:src="@drawable/ic_twitter"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/representative_facebook"
@@ -72,8 +72,7 @@
             android:contentDescription="@string/see_representative_facebook_page"
             android:src="@drawable/ic_facebook"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/representative_twitter"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/representative_twitter" />
 
         <ImageView
             android:id="@+id/representative_www"
@@ -83,8 +82,7 @@
             android:contentDescription="@string/see_representative_webpage"
             android:src="@drawable/ic_www"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/representative_facebook"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/representative_facebook" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

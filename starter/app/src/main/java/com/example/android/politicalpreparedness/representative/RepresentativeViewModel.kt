@@ -3,8 +3,14 @@ package com.example.android.politicalpreparedness.representative
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.*
 import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.utils.isValid
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RepresentativeViewModel : ViewModel() {
 
@@ -19,11 +25,6 @@ class RepresentativeViewModel : ViewModel() {
     init {
         _address.value = null
         _representatives.value = null
-    }
-
-    private fun getAddressDummyData(){
-        _address.value = Address("Amphitheatre Parkway", "1600", "Mountain View",
-                "California", "94043")
     }
 
     private fun getRepresentativeDummyData() {
@@ -61,13 +62,28 @@ class RepresentativeViewModel : ViewModel() {
 
     //TODO: Create function get address from geo location
     fun onUseLocationClicked() {
-        getAddressDummyData()
         getRepresentativeDummyData()
     }
 
     //TODO: Create function to get address from individual fields
-    fun onFindMyRepresentativesClicked(address: Address?) {
+    fun onFindMyRepresentativesClicked(address: Address) {
         _address.value = address
-        getRepresentativeDummyData()
+        if (address.isValid()) {
+            viewModelScope.launch {
+                getRepresentatives(address)
+            }
+        }
+    }
+
+    private suspend fun getRepresentatives(address: Address) {
+        var representatives = listOf<Representative>()
+        withContext(Dispatchers.IO) {
+            val representativeResponse: RepresentativeResponse = CivicsApi.retrofitService.getRepresentatives(address.toFormattedString())
+                    .await()
+            val offices = representativeResponse.offices
+            val officials = representativeResponse.officials
+            representatives = offices.flatMap { office -> office.getRepresentatives(officials) }
+        }
+        _representatives.value = representatives
     }
 }

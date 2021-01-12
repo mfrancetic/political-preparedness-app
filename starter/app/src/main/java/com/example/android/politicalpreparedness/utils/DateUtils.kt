@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness.network
+package com.example.android.politicalpreparedness.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
