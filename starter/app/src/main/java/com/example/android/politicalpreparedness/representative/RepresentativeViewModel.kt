@@ -78,7 +78,7 @@ class RepresentativeViewModel : ViewModel() {
     private suspend fun getRepresentatives(address: Address) {
         var representatives = listOf<Representative>()
         withContext(Dispatchers.IO) {
-            val representativeResponse: RepresentativeResponse = CivicsApi.retrofitService.getRepresentatives(address.toFormattedString())
+            val representativeResponse: RepresentativeResponse = CivicsApi.retrofitService.getRepresentativesAsync(address.toFormattedString())
                     .await()
             val offices = representativeResponse.offices
             val officials = representativeResponse.officials

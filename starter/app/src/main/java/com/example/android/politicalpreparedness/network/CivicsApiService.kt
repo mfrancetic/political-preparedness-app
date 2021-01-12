@@ -45,7 +45,7 @@ interface CivicsApiService {
                      @Query("address") address: String): Deferred<VoterInfoResponse>
 
     @GET("representatives")
-    fun getRepresentatives(@Query("address") address: String): Deferred<RepresentativeResponse>
+    fun getRepresentativesAsync(@Query("address") address: String): Deferred<RepresentativeResponse>
 }
 
 object CivicsApi {
