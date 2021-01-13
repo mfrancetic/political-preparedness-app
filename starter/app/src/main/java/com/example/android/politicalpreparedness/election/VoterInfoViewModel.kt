@@ -1,18 +1,23 @@
 package com.example.android.politicalpreparedness.election
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.database.ElectionDao
-import com.example.android.politicalpreparedness.network.models.*
+import com.example.android.politicalpreparedness.database.ElectionDatabase
+import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
+import com.example.android.politicalpreparedness.repository.ElectionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 
-class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
+class VoterInfoViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val database = ElectionDatabase.getInstance(application)
+    private val electionRepository = ElectionRepository(database)
 
     private val _voterInfo = MutableLiveData<VoterInfoResponse>()
     val voterInfo: LiveData<VoterInfoResponse>
@@ -22,10 +27,6 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     val election: LiveData<Election>
         get() = _election
 
-    private val _administrationBody = MutableLiveData<AdministrationBody>()
-    val administrationBody: LiveData<AdministrationBody>
-        get() = _administrationBody
-
     private val _openWebUrl = MutableLiveData<String>()
     val openWebUrl: LiveData<String>
         get() = _openWebUrl
@@ -33,35 +34,26 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     init {
         _voterInfo.value = null
         _openWebUrl.value = null
-        _administrationBody.value = null
+        _election.value = null
     }
 
     fun getVoterInfo(args: VoterInfoFragmentArgs) {
         val electionId = args.argElectionId
         val division = args.argDivision
+        val address: String
+
+        address = if (division.state.isNotEmpty()) {
+            "${division.state} ${division.country}"
+        } else {
+            division.country
+        }
         viewModelScope.launch {
-            dataSource.getElectionById(electionId).collect { election ->
+            _voterInfo.value = electionRepository.getVoterInfo(electionId, address)
+            database.electionDao.getElectionById(electionId).collect { election ->
                 _election.value = election
             }
         }
     }
-
-    private fun getDummyData() {
-        val state = mutableListOf<State>()
-        val address = Address("Amphitheatre Parkway", "1600 MountainView",
-                "Mountain View", "California", "94043")
-        val administrationBody = AdministrationBody("Administration body", "\"http://www.googleapis.com",
-                "http://www.googleapis.com", "http://www.googleapis.com", address)
-        state.add(State("Alabama", administrationBody));
-        val addresses = listOf(address)
-        val officials = mutableListOf<Official>()
-        officials.add(Official("Mike Pence", addresses, "Democratic Party"))
-        val election = Election(1, "Test 1", Date(), Division("1", "Division 1", "Division state 1"), true)
-        _voterInfo.value = VoterInfoResponse(election, "http://www.googleapis.com", "", state.toList())
-        _administrationBody.value = administrationBody
-    }
-
-    //TODO: Add var and methods to populate voter info
 
     fun openWebUrl(url: String) {
         _openWebUrl.value = url
@@ -71,16 +63,10 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
         _openWebUrl.value = null
     }
 
-    //TODO: Add var and methods to save and remove elections to local database
-
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how
-     * elections are saved/removed from the database.
-     */
     fun followUnfollowElection() {
-        if (election.value != null) {
-            val isSaved: Boolean = election.value!!.isSaved
-            election.value!!.isSaved = !isSaved
+        if (_election.value != null) {
+            val isSaved: Boolean = _election.value!!.isSaved
+            _election.value?.isSaved = !isSaved
             viewModelScope.launch {
                 updateElectionInDatabase()
             }
@@ -89,7 +75,7 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
 
     private suspend fun updateElectionInDatabase() {
         withContext(Dispatchers.IO) {
-            dataSource.insert(election.value!!)
+            _election.value?.let { database.electionDao.insert(it) }
         }
     }
 }

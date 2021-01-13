@@ -13,8 +13,8 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import com.example.android.politicalpreparedness.network.models.AdministrationBody
 import com.example.android.politicalpreparedness.network.models.Election
-import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 
 class VoterInfoFragment : Fragment() {
 
@@ -35,7 +35,7 @@ class VoterInfoFragment : Fragment() {
         fragmentContext = binding.address.context
 
         dataSource = ElectionDatabase.getInstance(fragmentContext).electionDao
-        viewModelFactory = VoterInfoViewModelFactory(dataSource)
+        viewModelFactory = VoterInfoViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(VoterInfoViewModel::class.java)
 
         binding.viewModel = viewModel
@@ -43,27 +43,22 @@ class VoterInfoFragment : Fragment() {
 
         setupObservers()
 
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-         */
         viewModel.getVoterInfo(args)
-
-        //TODO: Handle loading of URLs
-
-        //TODO: cont'd Handle save button clicks
         return binding.root
     }
 
     private fun setupObservers() {
         viewModel.voterInfo.observe(viewLifecycleOwner, { voterInfo ->
             if (voterInfo != null) {
-
+                val administrationBody = voterInfo.state?.get(0)?.electionAdministrationBody
+                if (administrationBody != null) {
+                    updateAdministrationBodyDetails(administrationBody)
+                }
             }
         })
 
         viewModel.election.observe(viewLifecycleOwner, { election ->
             if (election != null) {
-                binding.election = election
                 updateFollowButton(election)
             }
         })
@@ -74,18 +69,20 @@ class VoterInfoFragment : Fragment() {
                 viewModel.openWebUrlDone()
             }
         })
-        viewModel.administrationBody.observe(viewLifecycleOwner, { administrationBody ->
-            if (!administrationBody?.ballotInfoUrl.isNullOrBlank()) {
-                binding.stateBallot.visibility = View.VISIBLE
-            } else {
-                binding.stateBallot.visibility = View.GONE
-            }
-            if (administrationBody?.correspondenceAddress != null) {
-                binding.stateCorrespondenceHeader.visibility = View.VISIBLE
-            } else {
-                binding.stateBallot.visibility = View.GONE
-            }
-        })
+    }
+
+    private fun updateAdministrationBodyDetails(administrationBody: AdministrationBody) {
+        if (!administrationBody.ballotInfoUrl.isNullOrBlank()) {
+            binding.stateBallot.visibility = View.VISIBLE
+        } else {
+            binding.stateBallot.visibility = View.GONE
+        }
+
+        if (administrationBody.correspondenceAddress != null) {
+            binding.stateCorrespondenceHeader.visibility = View.VISIBLE
+        } else {
+            binding.stateBallot.visibility = View.GONE
+        }
     }
 
     private fun openWebUrl(url: String) {

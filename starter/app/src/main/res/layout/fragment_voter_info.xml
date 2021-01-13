@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="election"
-            type="com.example.android.politicalpreparedness.network.models.Election" />
-        <variable
             name="viewModel"
             type="com.example.android.politicalpreparedness.election.VoterInfoViewModel" />
     </data>
@@ -26,7 +23,7 @@
             android:padding="@dimen/default_padding"
             android:singleLine="true"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@{election.name}"
+            app:title="@{viewModel.voterInfo.election.name}"
             app:titleTextColor="@color/white"
             tools:title="Wisconsin Presidential Primary Elections" />
 
@@ -35,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_padding"
-            android:text="@{election.electionDay.toString()}"
+            android:text="@{viewModel.voterInfo.election.electionDay.toString()}"
             app:layout_constraintTop_toBottomOf="@id/election_name"
             tools:text="Tue Apr 07 00:00:00 EDT 2020" />
 
@@ -53,7 +50,7 @@
             android:id="@+id/state_locations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()-> viewModel.openWebUrl(viewModel.administrationBody.votingLocationFinderUrl)}"
+            android:onClick="@{()-> viewModel.openWebUrl(viewModel.voterInfo.state[0].electionAdministrationBody.votingLocationFinderUrl)}"
             android:text="@string/voting_locations"
             app:layout_constraintStart_toStartOf="@id/election_date"
             app:layout_constraintTop_toBottomOf="@id/state_header" />
@@ -62,7 +59,7 @@
             android:id="@+id/state_ballot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()-> viewModel.openWebUrl(viewModel.administrationBody.ballotInfoUrl)}"
+            android:onClick="@{()-> viewModel.openWebUrl(viewModel.voterInfo.state[0].electionAdministrationBody.ballotInfoUrl)}"
             android:text="@string/ballot_information"
             app:layout_constraintStart_toStartOf="@id/election_date"
             app:layout_constraintTop_toBottomOf="@id/state_locations" />
@@ -87,7 +84,7 @@
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.administrationBody.correspondenceAddress.toFormattedString()}"
+            android:text="@{viewModel.voterInfo.state[0].electionAdministrationBody.correspondenceAddress.toFormattedString()}"
             app:layout_constraintStart_toStartOf="@id/election_date"
             app:layout_constraintTop_toBottomOf="@id/state_correspondence_header"
             tools:text="Amphitheatre Parkway, 1600 MountainView, California, 94043" />
@@ -96,7 +93,7 @@
             android:id="@+id/follow_election_button"
             style="@style/WideButtonStyle"
             android:onClick="@{() -> viewModel.followUnfollowElection()}"
-            android:text="@string/follow_election"
+            tools:text="@string/follow_election"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
