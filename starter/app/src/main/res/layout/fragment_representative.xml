@@ -15,7 +15,7 @@
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/fragment_representatives_motion_layout"
+        android:id="@+id/fragment_representative_motion_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/default_padding"
@@ -147,7 +147,7 @@
             app:layout_constraintTop_toBottomOf="@id/button_location" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_representatives_recycler_view"
+            android:id="@+id/representatives_fragment_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

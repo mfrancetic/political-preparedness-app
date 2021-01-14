@@ -138,7 +138,7 @@ class DetailFragment : Fragment() {
 
     private fun setupRecyclerViewAdapter() {
         adapter = RepresentativeListAdapter()
-        binding.fragmentRepresentativesRecyclerView.adapter = adapter
+        binding.representativesFragmentRecyclerView.adapter = adapter
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
