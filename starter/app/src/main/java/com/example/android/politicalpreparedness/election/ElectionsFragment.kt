@@ -32,20 +32,21 @@ class ElectionsFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_election, container, false)
 
+        //TODO: Link elections to voter info
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModelFactory = ElectionsViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(ElectionsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ElectionsViewModel::class.java)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         setupRecyclerViewAdapters()
         setupObservers()
-
-
-        //TODO: Link elections to voter info
-
-
-        return binding.root
     }
 
     private fun setupObservers() {
@@ -83,11 +84,6 @@ class ElectionsFragment : Fragment() {
             viewModel.onElectionSelected(election)
         })
         binding.savedElectionsRecyclerView.adapter = savedElectionsAdapter
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onClear()
     }
     //TODO: Refresh adapters when fragment loads
 }

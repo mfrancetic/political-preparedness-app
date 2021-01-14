@@ -72,10 +72,4 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
             _election.value?.let { database.electionDao.insert(it) }
         }
     }
-
-    fun onClear() {
-        _voterInfo.value = null
-        _openWebUrl.value = null
-        _election.value = null
-    }
 }

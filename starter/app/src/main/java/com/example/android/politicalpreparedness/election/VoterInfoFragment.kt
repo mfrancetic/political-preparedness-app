@@ -32,11 +32,17 @@ class VoterInfoFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_voter_info, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         fragmentContext = binding.address.context
 
         dataSource = ElectionDatabase.getInstance(fragmentContext).electionDao
         viewModelFactory = VoterInfoViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(VoterInfoViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(VoterInfoViewModel::class.java)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -44,7 +50,6 @@ class VoterInfoFragment : Fragment() {
         setupObservers()
 
         viewModel.getVoterInfo(args)
-        return binding.root
     }
 
     private fun setupObservers() {
@@ -96,10 +101,5 @@ class VoterInfoFragment : Fragment() {
             followElectionButtonText = getString(R.string.unfollow_election)
         }
         binding.followElectionButton.text = followElectionButtonText
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onClear()
     }
 }
