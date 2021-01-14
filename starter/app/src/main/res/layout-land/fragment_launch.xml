@@ -12,11 +12,10 @@
 
         <ImageView
             android:id="@+id/home_screen_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
             android:contentDescription="@string/logo_content_description"
             android:src="@drawable/ballot_logo"
-            app:layout_constraintBottom_toBottomOf="@id/upcomingButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
