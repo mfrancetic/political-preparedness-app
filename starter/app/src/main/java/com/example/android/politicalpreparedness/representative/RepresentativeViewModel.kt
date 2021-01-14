@@ -32,15 +32,7 @@ class RepresentativeViewModel : ViewModel() {
 
     private val _findRepresentativesButtonClicked = MutableLiveData<Address>()
     val findRepresentativesButtonClicked: LiveData<Address>
-    get() = _findRepresentativesButtonClicked
-
-    init {
-        _address.value = null
-        _representatives.value = null
-        _locationButtonClicked.value = false
-        _snackbarMessage.value = null
-        _findRepresentativesButtonClicked.value = null
-    }
+        get() = _findRepresentativesButtonClicked
 
     fun onUseLocationClicked() {
         _locationButtonClicked.value = true
@@ -92,5 +84,13 @@ class RepresentativeViewModel : ViewModel() {
             representatives = offices.flatMap { office -> office.getRepresentatives(officials) }
         }
         _representatives.value = representatives
+    }
+
+    fun onClear() {
+        _address.value = null
+        _findRepresentativesButtonClicked.value = null
+        _snackbarMessage.value = null
+        _locationButtonClicked.value = null
+        _representatives.value = null
     }
 }

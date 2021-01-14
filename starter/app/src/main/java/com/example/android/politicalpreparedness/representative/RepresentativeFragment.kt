@@ -212,4 +212,9 @@ class DetailFragment : Fragment() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onClear()
+    }
 }

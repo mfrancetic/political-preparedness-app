@@ -85,5 +85,9 @@ class ElectionsFragment : Fragment() {
         binding.savedElectionsRecyclerView.adapter = savedElectionsAdapter
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onClear()
+    }
     //TODO: Refresh adapters when fragment loads
 }

@@ -97,4 +97,9 @@ class VoterInfoFragment : Fragment() {
         }
         binding.followElectionButton.text = followElectionButtonText
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onClear()
+    }
 }

@@ -31,12 +31,6 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
     val openWebUrl: LiveData<String>
         get() = _openWebUrl
 
-    init {
-        _voterInfo.value = null
-        _openWebUrl.value = null
-        _election.value = null
-    }
-
     fun getVoterInfo(args: VoterInfoFragmentArgs) {
         val electionId = args.argElectionId
         val division = args.argDivision
@@ -77,5 +71,11 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
         withContext(Dispatchers.IO) {
             _election.value?.let { database.electionDao.insert(it) }
         }
+    }
+
+    fun onClear() {
+        _voterInfo.value = null
+        _openWebUrl.value = null
+        _election.value = null
     }
 }

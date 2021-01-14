@@ -38,7 +38,6 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
         }
         getUpcomingElections()
         getSavedElections()
-        _navigateToVoterInfo.value = null
     }
 
     private fun getUpcomingElections() {
@@ -63,5 +62,11 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun onElectionSelectedDone() {
         _navigateToVoterInfo.value = null
+    }
+
+    fun onClear() {
+        _navigateToVoterInfo.value = null
+        _upcomingElections.value = null
+        _savedElections.value = null
     }
 }
