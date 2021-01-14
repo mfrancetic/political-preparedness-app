@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:motion="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
 
@@ -9,7 +9,6 @@
             android:id="@+id/search_title"
             style="@style/TitleStyle"
             android:layout_width="wrap_content"
-            android:visibility="visible"
             android:layout_height="wrap_content"
             android:text="@string/representative_search"
             app:layout_constraintStart_toStartOf="parent"
@@ -19,35 +18,22 @@
             android:id="@+id/address_line_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/address_line_1"
-            android:hint="@string/address_line_1"
-            android:inputType="textPostalAddress"
-            android:text="@{address.line1}"
-            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
 
         <Constraint
             android:id="@+id/address_line_2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:autofillHints="@string/address_line_2"
-            android:hint="@string/address_line_2"
-            android:inputType="textPostalAddress"
-            android:visibility="visible"
-            android:text="@{address.line2}"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_line_1" />
+            app:layout_constraintTop_toBottomOf="@id/address_line_1">
+
+        </Constraint>
 
         <Constraint
             android:id="@+id/city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/city"
-            android:hint="@string/city"
-            android:inputType="textPostalAddress"
-            android:text="@{address.city}"
-            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@id/state"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_2" />
@@ -55,7 +41,6 @@
         <Constraint
             android:id="@+id/state"
             android:layout_width="0dp"
-            android:visibility="visible"
             android:layout_height="0dp"
             android:inputType="textPostalAddress"
             app:layout_constraintBottom_toBottomOf="@id/city"
@@ -67,12 +52,6 @@
             android:id="@+id/zip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/zip"
-            android:hint="@string/zip"
-            android:inputType="number"
-            android:visibility="visible"
-            android:maxLength="5"
-            android:text="@{address.zip}"
             app:layout_constraintEnd_toEndOf="@id/city"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/city" />
@@ -82,8 +61,6 @@
             style="@style/WideButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:onClick="@{()-> viewModel.onFindMyRepresentativesClicked(address)}"
             android:text="@string/find_my_representatives"
             app:layout_constraintTop_toBottomOf="@id/zip" />
 
@@ -92,11 +69,26 @@
             style="@style/WideButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()-> viewModel.onUseLocationClicked()}"
             android:layout_marginTop="@dimen/default_padding"
-            android:visibility="visible"
             android:text="@string/use_my_location"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
+
+        <Constraint
+            android:id="@+id/representative_title"
+            style="@style/TitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_representatives"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_location" />
+
+        <Constraint
+            android:id="@+id/fragment_representatives_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/representative_title" />
+
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -106,53 +98,36 @@
             style="@style/TitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:text="@string/representative_search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/address_line_1"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
             android:id="@+id/address_line_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/address_line_1"
-            android:hint="@string/address_line_1"
-            android:visibility="gone"
-            android:inputType="textPostalAddress"
-            android:text="@{address.line1}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_title" />
+            app:layout_constraintBottom_toTopOf="@id/address_line_2"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
             android:id="@+id/address_line_2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:autofillHints="@string/address_line_2"
-            android:hint="@string/address_line_2"
-            android:visibility="gone"
-            android:inputType="textPostalAddress"
-            android:text="@{address.line2}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_line_1" />
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/city"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
             android:id="@+id/city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/city"
-            android:hint="@string/city"
-            android:inputType="textPostalAddress"
-            android:text="@{address.city}"
-            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/zip"
             app:layout_constraintEnd_toStartOf="@id/state"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_line_2" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
             android:id="@+id/state"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
             android:inputType="textPostalAddress"
             app:layout_constraintBottom_toBottomOf="@id/city"
             app:layout_constraintEnd_toEndOf="parent"
@@ -163,45 +138,61 @@
             android:id="@+id/zip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/zip"
-            android:hint="@string/zip"
-            android:inputType="number"
-            android:visibility="gone"
-            android:maxLength="5"
-            android:text="@{address.zip}"
+            app:layout_constraintBottom_toTopOf="@id/button_search"
             app:layout_constraintEnd_toEndOf="@id/city"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/city" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Constraint
             android:id="@+id/button_search"
             style="@style/WideButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:onClick="@{()-> viewModel.onFindMyRepresentativesClicked(address)}"
             android:text="@string/find_my_representatives"
-            app:layout_constraintTop_toBottomOf="@id/zip" />
+            app:layout_constraintBottom_toTopOf="@id/button_location" />
 
         <Constraint
             android:id="@+id/button_location"
             style="@style/WideButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:onClick="@{()-> viewModel.onUseLocationClicked()}"
             android:layout_marginTop="@dimen/default_padding"
             android:text="@string/use_my_location"
-            app:layout_constraintTop_toBottomOf="@id/button_search" />
+            app:layout_constraintBottom_toTopOf="@id/representative_title" />
+
+        <Constraint
+            android:id="@+id/representative_title"
+            style="@style/TitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_representatives"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/fragment_representatives_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/representative_title"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </ConstraintSet>
 
     <Transition
         app:constraintSetEnd="@id/end"
-        app:duration="2000"
-        app:constraintSetStart="@+id/start">
+        app:constraintSetStart="@id/start"
+        app:duration="1000">
         <OnSwipe
             motion:dragDirection="dragUp"
-            motion:touchAnchorId="@+id/fragment_representatives_motion_layout"
+            motion:touchAnchorId="@+id/fragment_representatives_recycler_view"
             motion:touchAnchorSide="top" />
+    </Transition>
+    <Transition
+        app:constraintSetEnd="@id/start"
+        app:constraintSetStart="@+id/end"
+        app:duration="1000">
+        <OnSwipe
+            motion:dragDirection="dragDown"
+            motion:touchAnchorId="@+id/fragment_representatives_recycler_view"
+            motion:touchAnchorSide="bottom" />
     </Transition>
 </MotionScene>
