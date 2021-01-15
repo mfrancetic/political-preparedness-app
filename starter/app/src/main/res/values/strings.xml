@@ -34,4 +34,5 @@
     <string name="no_ballot_information_available">No ballot information available</string>
     <string name="no_voting_locations_available">No voting locations available</string>
     <string name="no_representatives_found">No representatives found</string>
+    <string name="no_elections_found">No elections found</string>
 </resources>
