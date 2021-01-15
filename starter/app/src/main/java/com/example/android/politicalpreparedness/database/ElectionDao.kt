@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.android.politicalpreparedness.network.models.Election
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 interface ElectionDao {
@@ -16,8 +17,8 @@ interface ElectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(election: Election)
 
-    @Query("SELECT * FROM election_table")
-    fun getUpcomingElections(): Flow<List<Election>>
+    @Query("SELECT * FROM election_table WHERE electionDay >= :today")
+    fun getUpcomingElections(today: Date): Flow<List<Election>>
 
     @Query("SELECT * FROM election_table WHERE isSaved")
     fun getSavedElections(): Flow<List<Election>>
