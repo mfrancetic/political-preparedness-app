@@ -1,17 +1,15 @@
 package com.example.android.politicalpreparedness.representative.adapter
 
 import android.view.View
-import android.widget.AdapterView
+import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.Spinner
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
 import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.representative.model.Representative
 
 
 @BindingAdapter("profileImage")
@@ -62,6 +60,15 @@ fun setStateListener(spinner: Spinner, stateChange: InverseBindingListener?) {
 fun Spinner.getNewValue(): String {
     val states: Array<String> = resources.getStringArray(R.array.states)
     return states[this.selectedItemPosition]
+}
+
+@BindingAdapter("isVisible")
+fun setEmptyTextViewVisibility(view: TextView, representatives: List<Representative>?) {
+    if (representatives != null && representatives.isNotEmpty()) {
+        view.visibility = View.GONE
+    } else {
+        view.visibility = View.VISIBLE
+    }
 }
 
 inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T> {

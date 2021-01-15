@@ -4,7 +4,6 @@
     xmlns:motion="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="address"
             type="com.example.android.politicalpreparedness.network.models.Address" />
@@ -145,6 +144,15 @@
             android:text="@string/my_representatives"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_location" />
+
+        <TextView
+            android:id="@+id/representative_empty_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:isVisible="@{viewModel.representatives}"
+            android:text="@string/no_representatives_found"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/representative_title" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/representatives_fragment_recycler_view"

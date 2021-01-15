@@ -4,15 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.repository.RepresentativesRepository
 import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.utils.ERROR_NO_DATA_FOUND
 import com.example.android.politicalpreparedness.utils.isValid
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class RepresentativeViewModel : ViewModel() {
+
+    private val representativeRepository = RepresentativesRepository()
 
     private val _address = MutableLiveData<Address>()
     val address: LiveData<Address>
@@ -75,14 +77,11 @@ class RepresentativeViewModel : ViewModel() {
     }
 
     private suspend fun getRepresentatives(address: Address) {
-        var representatives = listOf<Representative>()
-        withContext(Dispatchers.IO) {
-            val representativeResponse = CivicsApi.retrofitService.getRepresentativesAsync(address.toFormattedString())
-                    .await()
-            val offices = representativeResponse.offices
-            val officials = representativeResponse.officials
-            representatives = offices.flatMap { office -> office.getRepresentatives(officials) }
+        try {
+            _representatives.value = representativeRepository.getRepresentatives(address)
+        } catch (e: Exception) {
+            _representatives.value = null
+            _snackbarMessage.value = ERROR_NO_DATA_FOUND
         }
-        _representatives.value = representatives
     }
 }

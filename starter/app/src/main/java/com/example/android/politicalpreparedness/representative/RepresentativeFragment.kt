@@ -21,11 +21,11 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.utils.ERROR_NO_DATA_FOUND
 import com.example.android.politicalpreparedness.utils.ValidationTextWatcher
 import com.example.android.politicalpreparedness.utils.areAllFieldsValid
 import com.example.android.politicalpreparedness.utils.displaySnackbar
 import com.google.android.gms.location.LocationServices
-import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -91,8 +91,12 @@ class DetailFragment : Fragment() {
             }
         })
 
-        viewModel.snackbarMessage.observe(viewLifecycleOwner, { message ->
+        viewModel.snackbarMessage.observe(viewLifecycleOwner, { snackbarMessage ->
+            var message = snackbarMessage
             if (!message.isNullOrBlank()) {
+                if (message == ERROR_NO_DATA_FOUND) {
+                    message = fragmentContext.getString(R.string.no_representatives_found)
+                }
                 displaySnackbar(requireView(), message)
                 viewModel.snackbarMessageDone()
             }
