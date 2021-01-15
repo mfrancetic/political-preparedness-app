@@ -8,14 +8,11 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -26,17 +23,15 @@ import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.example.android.politicalpreparedness.utils.ValidationTextWatcher
 import com.example.android.politicalpreparedness.utils.areAllFieldsValid
-import com.example.android.politicalpreparedness.utils.isValid
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
 class DetailFragment : Fragment() {
 
     companion object {
         const val LOCATION_REQUEST_PERMISSION = 2
+        const val ADDRESS_KEY = "ADDRESS_KEY"
     }
 
     private lateinit var viewModel: RepresentativeViewModel
@@ -48,13 +43,22 @@ class DetailFragment : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(this).get(RepresentativeViewModel::class.java)
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(RepresentativeViewModel::class.java)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        binding.address = Address("", "", "", "Alabama", "")
+        if (savedInstanceState != null) {
+            binding.address = savedInstanceState.getParcelable(ADDRESS_KEY)
+        } else {
+            binding.address = Address("", "", "", "Alabama", "")
+        }
 
         fragmentContext = binding.addressLine1.context
 
@@ -62,8 +66,6 @@ class DetailFragment : Fragment() {
         setupObservers()
         setupStateSpinner()
         addTextChangedListeners()
-
-        return binding.root
     }
 
     private fun addTextChangedListeners() {
@@ -213,8 +215,8 @@ class DetailFragment : Fragment() {
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onClear()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(ADDRESS_KEY, binding.address)
     }
 }

@@ -1,12 +1,18 @@
 package com.example.android.politicalpreparedness.representative.adapter
 
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
 import com.example.android.politicalpreparedness.R
+
 
 @BindingAdapter("profileImage")
 fun fetchImage(view: ImageView, src: String?) {
@@ -34,6 +40,30 @@ fun Spinner.setNewValue(value: String?) {
     }
 }
 
-inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T>{
+@BindingAdapter("stateValueAttrChanged")
+fun setStateListener(spinner: Spinner, stateChange: InverseBindingListener?) {
+    if (stateChange == null) {
+        spinner.onItemSelectedListener = null
+    } else {
+        val listener: OnItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                stateChange.onChange()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                stateChange.onChange()
+            }
+        }
+        spinner.onItemSelectedListener = listener
+    }
+}
+
+@InverseBindingAdapter(attribute = "stateValue")
+fun Spinner.getNewValue(): String {
+    val states: Array<String> = resources.getStringArray(R.array.states)
+    return states[this.selectedItemPosition]
+}
+
+inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T> {
     return adapter as ArrayAdapter<T>
 }

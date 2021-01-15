@@ -85,12 +85,4 @@ class RepresentativeViewModel : ViewModel() {
         }
         _representatives.value = representatives
     }
-
-    fun onClear() {
-        _address.value = null
-        _findRepresentativesButtonClicked.value = null
-        _snackbarMessage.value = null
-        _locationButtonClicked.value = null
-        _representatives.value = null
-    }
 }
