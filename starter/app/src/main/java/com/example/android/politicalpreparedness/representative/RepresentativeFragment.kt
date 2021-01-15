@@ -23,6 +23,7 @@ import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.example.android.politicalpreparedness.utils.ValidationTextWatcher
 import com.example.android.politicalpreparedness.utils.areAllFieldsValid
+import com.example.android.politicalpreparedness.utils.displaySnackbar
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -92,7 +93,7 @@ class DetailFragment : Fragment() {
 
         viewModel.snackbarMessage.observe(viewLifecycleOwner, { message ->
             if (!message.isNullOrBlank()) {
-                displaySnackbar(message)
+                displaySnackbar(requireView(), message)
                 viewModel.snackbarMessageDone()
             }
         })
@@ -128,10 +129,6 @@ class DetailFragment : Fragment() {
         val locationManager =
                 fragmentContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-    }
-
-    private fun displaySnackbar(message: String) {
-        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun promptUserToEnableLocationServices() {
@@ -189,7 +186,7 @@ class DetailFragment : Fragment() {
                     viewModel.getAddressFromGeolocation(address)
                     binding.address = address
                 } else {
-                    displaySnackbar(fragmentContext.getString(R.string.location_must_be_in_the_us))
+                    displaySnackbar(requireView(), fragmentContext.getString(R.string.location_must_be_in_the_us))
                 }
             }
         }

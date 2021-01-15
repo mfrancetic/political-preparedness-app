@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class VoterInfoViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -42,7 +43,11 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
             division.country
         }
         viewModelScope.launch {
-            _voterInfo.value = electionRepository.getVoterInfo(electionId, address)
+            try {
+                _voterInfo.value = electionRepository.getVoterInfo(electionId, address)
+            } catch (e: Exception) {
+                _voterInfo.value = null
+            }
             database.electionDao.getElectionById(electionId).collect { election ->
                 _election.value = election
             }

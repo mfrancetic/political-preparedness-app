@@ -30,4 +30,7 @@
     <string name="field_required">Field must not be empty</string>
     <string name="zip_length_must_be_5">Zip length must be 5 digits</string>
     <string name="all_fields_must_be_valid">All fields must be valid</string>
+    <string name="no_address_available">No address available</string>
+    <string name="no_ballot_information_available">No ballot information available</string>
+    <string name="no_voting_locations_available">No voting locations available</string>
 </resources>
