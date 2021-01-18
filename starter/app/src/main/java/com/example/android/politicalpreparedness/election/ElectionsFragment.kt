@@ -1,6 +1,5 @@
 package com.example.android.politicalpreparedness.election
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import com.example.android.politicalpreparedness.databinding.FragmentElectionBin
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 import com.example.android.politicalpreparedness.network.models.Election
-import com.example.android.politicalpreparedness.repository.ElectionRepository
 
 class ElectionsFragment : Fragment() {
 
@@ -32,7 +30,6 @@ class ElectionsFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_election, container, false)
 
-        //TODO: Link elections to voter info
         return binding.root
     }
 
@@ -40,7 +37,8 @@ class ElectionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModelFactory = ElectionsViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ElectionsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
+                .get(ElectionsViewModel::class.java)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -71,7 +69,8 @@ class ElectionsFragment : Fragment() {
     }
 
     private fun navigateToVoterInfoFragment(election: Election) {
-        findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id, election.division))
+        findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
+                election.id, election.division))
     }
 
     private fun setupRecyclerViewAdapters() {
@@ -85,5 +84,4 @@ class ElectionsFragment : Fragment() {
         })
         binding.savedElectionsRecyclerView.adapter = savedElectionsAdapter
     }
-    //TODO: Refresh adapters when fragment loads
 }

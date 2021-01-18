@@ -1,6 +1,5 @@
 package com.example.android.politicalpreparedness.election.adapter
 
-//import com.example.android.politicalpreparedness.databinding.ViewholderElectionBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

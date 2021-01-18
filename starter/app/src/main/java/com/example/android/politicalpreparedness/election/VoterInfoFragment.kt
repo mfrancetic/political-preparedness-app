@@ -24,7 +24,7 @@ class VoterInfoFragment : Fragment() {
     private lateinit var viewModelFactory: VoterInfoViewModelFactory
     private lateinit var dataSource: ElectionDao
     private lateinit var fragmentContext: Context
-    val args: VoterInfoFragmentArgs by navArgs()
+    private val args: VoterInfoFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
