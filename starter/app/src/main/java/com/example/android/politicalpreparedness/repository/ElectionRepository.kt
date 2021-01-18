@@ -11,14 +11,12 @@ import kotlinx.coroutines.withContext
 class ElectionRepository(private val electionDatabase: ElectionDatabase) {
 
     suspend fun refreshElections() {
+        val elections: List<Election>
         withContext(Dispatchers.IO) {
-            var elections: List<Election>
-            withContext(Dispatchers.IO) {
-                val electionResponse: ElectionResponse = CivicsApi.retrofitService.getElectionsAsync()
-                        .await()
-                elections = electionResponse.elections
-                electionDatabase.electionDao.insertAll(elections)
-            }
+            val electionResponse: ElectionResponse = CivicsApi.retrofitService.getElectionsAsync()
+                    .await()
+            elections = electionResponse.elections
+            electionDatabase.electionDao.insertAll(elections)
         }
     }
 

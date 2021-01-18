@@ -33,7 +33,6 @@ private val retrofit = Retrofit.Builder()
 /**
  *  Documentation for the Google Civics API Service can be found at https://developers.google.com/civic-information/docs/v2
  */
-
 interface CivicsApiService {
     @GET("elections")
     fun getElectionsAsync(): Deferred<ElectionResponse>
