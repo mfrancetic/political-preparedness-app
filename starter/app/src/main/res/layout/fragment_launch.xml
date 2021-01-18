@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.launch.LaunchViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_launch_constraint_layout"
         android:layout_width="match_parent"
@@ -24,14 +31,16 @@
         <Button
             android:id="@+id/upcomingButton"
             style="@style/WideButtonStyle"
-            android:text="@string/upcoming_elections"
             android:layout_marginBottom="@dimen/default_padding"
+            android:onClick="@{()-> viewModel.onUpcomingElectionsButtonClicked()}"
+            android:text="@string/upcoming_elections"
             app:layout_constraintBottom_toTopOf="@id/representativeButton"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/representativeButton"
             style="@style/WideButtonStyle"
+            android:onClick="@{()-> viewModel.onRepresentativeButtonClicked()}"
             android:text="@string/find_my_representatives"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
