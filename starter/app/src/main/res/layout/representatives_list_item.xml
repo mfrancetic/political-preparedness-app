@@ -14,7 +14,7 @@
         android:id="@+id/representatives_list_item_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/default_padding">
+        android:paddingVertical="@dimen/default_padding">
 
         <ImageView
             android:id="@+id/representative_image"
@@ -37,7 +37,7 @@
             tools:text="U.S. Senator" />
 
         <TextView
-            style="@style/DefaultTextStyle"
+            style="@style/RepresentativeNameStyle"
             android:id="@+id/representative_name"
             android:text="@{representative.official.name}"
             app:layout_constraintStart_toStartOf="@id/representative_title"

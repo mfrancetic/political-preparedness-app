@@ -137,6 +137,7 @@
         <TextView
             android:id="@+id/representative_title"
             style="@style/TitleStyle"
+            android:paddingVertical="@dimen/default_padding"
             android:text="@string/my_representatives"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_location" />
@@ -156,7 +157,7 @@
             android:id="@+id/representative_empty_text_view"
             style="@style/DefaultTextStyle"
             android:text="@string/no_representatives_found"
-            app:isVisible="@{viewModel.representatives}"
+            app:isVisible="@{!viewModel.representatives.empty || viewModel.isRepresentativeDataLoading()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/representative_title" />
 

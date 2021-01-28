@@ -26,6 +26,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="RepresentativeNameStyle" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
     <style name="ElectionListItemNameStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textStyle">bold</item>
     </style>

@@ -9,7 +9,6 @@ import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
 import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.representative.model.Representative
 
 @BindingAdapter("profileImage")
 fun fetchImage(view: ImageView, src: String?) {
@@ -62,8 +61,8 @@ fun Spinner.getNewValue(): String {
 }
 
 @BindingAdapter("isVisible")
-fun setEmptyTextViewVisibility(view: TextView, representatives: List<Representative>?) {
-    if (representatives != null && representatives.isNotEmpty()) {
+fun setEmptyTextViewVisibility(view: TextView, isVisible: Boolean) {
+    if (isVisible) {
         view.visibility = View.GONE
     } else {
         view.visibility = View.VISIBLE
