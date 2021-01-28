@@ -36,6 +36,10 @@ class RepresentativeViewModel : ViewModel() {
     val findRepresentativesButtonClicked: LiveData<Address>
         get() = _findRepresentativesButtonClicked
 
+    private val _isRepresentativeDataLoading = MutableLiveData<Boolean>()
+    val isRepresentativeDataLoading: LiveData<Boolean>
+    get() = _isRepresentativeDataLoading
+
     fun onUseLocationClicked() {
         _locationButtonClicked.value = true
     }
@@ -70,10 +74,15 @@ class RepresentativeViewModel : ViewModel() {
     private fun getRepresentativesIfAddressValid(address: Address) {
         _address.value = address
         if (address.isValid()) {
+            setRepresentativeDataLoading(true)
             viewModelScope.launch {
                 getRepresentatives(address)
             }
         }
+    }
+
+    private fun setRepresentativeDataLoading(isDataLoading: Boolean) {
+        _isRepresentativeDataLoading.value = isDataLoading
     }
 
     private suspend fun getRepresentatives(address: Address) {
@@ -83,5 +92,7 @@ class RepresentativeViewModel : ViewModel() {
             _representatives.value = null
             _snackbarMessage.value = ERROR_NO_DATA_FOUND
         }
+
+        setRepresentativeDataLoading(false)
     }
 }

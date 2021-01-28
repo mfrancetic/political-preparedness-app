@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="address"
             type="com.example.android.politicalpreparedness.network.models.Address" />
@@ -138,6 +140,17 @@
             android:text="@string/my_representatives"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_location" />
+
+        <ProgressBar
+            android:id="@+id/representative_loading_indicator"
+            android:layout_width="@dimen/loading_indicator_size"
+            android:layout_height="@dimen/loading_indicator_size"
+            android:indeterminateDrawable="@drawable/loading_animation"
+            android:contentDescription="@string/representative_loading_indicator_content_description"
+            app:isProgressBarVisible="@{viewModel.isRepresentativeDataLoading()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/representative_title" />
 
         <TextView
             android:id="@+id/representative_empty_text_view"

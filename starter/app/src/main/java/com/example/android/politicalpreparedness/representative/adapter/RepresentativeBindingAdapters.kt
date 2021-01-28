@@ -73,3 +73,12 @@ fun setEmptyTextViewVisibility(view: TextView, representatives: List<Representat
 inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T> {
     return adapter as ArrayAdapter<T>
 }
+
+@BindingAdapter("isProgressBarVisible")
+fun setImageVisibility(view: ProgressBar, isDataLoading: Boolean) {
+    if (isDataLoading) {
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.GONE
+    }
+}

@@ -77,6 +77,17 @@
             app:layout_constraintTop_toBottomOf="@id/button_location" />
 
         <Constraint
+            android:id="@+id/representative_loading_indicator"
+            android:layout_width="@dimen/loading_indicator_size"
+            android:layout_height="@dimen/loading_indicator_size"
+            app:visibilityMode="ignore"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/representative_loading_indicator_content_description"
+            app:layout_constraintTop_toBottomOf="@id/representative_title"
+            app:srcCompat="@drawable/loading_img"/>
+
+        <Constraint
             android:id="@+id/representative_empty_text_view"
             style="@style/DefaultTextStyle"
             android:text="@string/no_representatives_found"
@@ -161,6 +172,17 @@
             android:text="@string/my_representatives"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/representative_loading_indicator"
+            android:layout_width="@dimen/loading_indicator_size"
+            android:layout_height="@dimen/loading_indicator_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:visibilityMode="ignore"
+            android:contentDescription="@string/representative_loading_indicator_content_description"
+            app:layout_constraintTop_toBottomOf="@id/representative_title"
+            app:srcCompat="@drawable/loading_img"/>
 
         <Constraint
             android:id="@+id/representative_empty_text_view"

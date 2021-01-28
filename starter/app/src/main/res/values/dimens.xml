@@ -5,4 +5,5 @@
     <dimen name="contact_image_button_size">32dp</dimen>
     <dimen name="logo_size">157dp</dimen>
     <dimen name="padding_large">32dp</dimen>
+    <dimen name="loading_indicator_size">256dp</dimen>
 </resources>
