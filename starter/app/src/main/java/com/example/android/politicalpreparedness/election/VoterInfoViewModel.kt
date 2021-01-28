@@ -32,7 +32,13 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
     val openWebUrl: LiveData<String>
         get() = _openWebUrl
 
+    private val _isVoterInfoDataLoading = MutableLiveData<Boolean>()
+    val isVoterInfoDataLoading: LiveData<Boolean>
+        get() = _isVoterInfoDataLoading
+
     fun getVoterInfo(args: VoterInfoFragmentArgs) {
+        setVoterInfoDataLoading(true)
+
         val electionId = args.argElectionId
         val division = args.argDivision
         val address: String
@@ -50,6 +56,7 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
             }
             database.electionDao.getElectionById(electionId).collect { election ->
                 _election.value = election
+                setVoterInfoDataLoading(false)
             }
         }
     }
@@ -76,5 +83,9 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
         withContext(Dispatchers.IO) {
             _election.value?.let { database.electionDao.insert(it) }
         }
+    }
+
+    private fun setVoterInfoDataLoading(isDataLoading: Boolean) {
+        _isVoterInfoDataLoading.value = isDataLoading
     }
 }

@@ -24,20 +24,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/election_loading_indicator"
+            android:layout_width="@dimen/loading_indicator_size"
+            android:layout_height="@dimen/loading_indicator_size"
+            android:contentDescription="@string/representative_loading_indicator_content_description"
+            android:indeterminateDrawable="@drawable/loading_animation"
+            app:isProgressBarVisible="@{viewModel.isElectionDataLoading()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/upcoming_elections_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/default_padding"
+            android:paddingBottom="@dimen/padding_large"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            android:paddingBottom="@dimen/padding_large"
             app:layout_constraintTop_toBottomOf="@id/upcoming_elections_title"
             tools:listitem="@layout/elections_list_item" />
 
         <TextView
-            style="@style/DefaultTextStyle"
             android:id="@+id/upcoming_elections_empty_text_view"
+            style="@style/DefaultTextStyle"
             android:text="@string/no_elections_found"
             app:isVisible="@{viewModel.upcomingElections}"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,8 +64,8 @@
             app:layout_constraintTop_toBottomOf="@id/upcoming_elections_recycler_view" />
 
         <TextView
-            style="@style/DefaultTextStyle"
             android:id="@+id/saved_elections_empty_text_view"
+            style="@style/DefaultTextStyle"
             android:text="@string/no_elections_found"
             app:isVisible="@{viewModel.savedElections}"
             app:layout_constraintStart_toStartOf="parent"

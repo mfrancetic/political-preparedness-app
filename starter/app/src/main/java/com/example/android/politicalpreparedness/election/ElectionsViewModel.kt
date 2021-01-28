@@ -29,7 +29,13 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
     val navigateToVoterInfo: LiveData<Election>
         get() = _navigateToVoterInfo
 
+    private val _isElectionDataLoading = MutableLiveData<Boolean>()
+    val isElectionDataLoading: LiveData<Boolean>
+        get() = _isElectionDataLoading
+
     init {
+        setElectionDataLoading(true)
+
         viewModelScope.launch {
             try {
                 electionRepository.refreshElections()
@@ -47,6 +53,7 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
                 _upcomingElections.value = elections
             }
         }
+        setElectionDataLoading(false)
     }
 
     private fun getSavedElections() {
@@ -63,5 +70,9 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun onElectionSelectedDone() {
         _navigateToVoterInfo.value = null
+    }
+
+    private fun setElectionDataLoading(isDataLoading: Boolean) {
+        _isElectionDataLoading.value = isDataLoading
     }
 }

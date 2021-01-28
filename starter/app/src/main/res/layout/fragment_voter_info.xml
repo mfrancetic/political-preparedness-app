@@ -31,6 +31,18 @@
             app:titleTextColor="@color/white"
             tools:title="Wisconsin Presidential Primary Elections" />
 
+        <ProgressBar
+            android:id="@+id/voter_info_loading_indicator"
+            android:layout_width="@dimen/loading_indicator_size"
+            android:layout_height="@dimen/loading_indicator_size"
+            android:contentDescription="@string/representative_loading_indicator_content_description"
+            android:indeterminateDrawable="@drawable/loading_animation"
+            app:isProgressBarVisible="@{viewModel.isVoterInfoDataLoading()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/election_date"
             style="@style/DefaultTextStyle"
