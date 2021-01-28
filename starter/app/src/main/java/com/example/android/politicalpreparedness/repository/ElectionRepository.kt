@@ -6,6 +6,7 @@ import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 
 class ElectionRepository(private val electionDatabase: ElectionDatabase) {
@@ -16,6 +17,14 @@ class ElectionRepository(private val electionDatabase: ElectionDatabase) {
             val electionResponse: ElectionResponse = CivicsApi.retrofitService.getElectionsAsync()
                     .await()
             elections = electionResponse.elections
+
+            elections.forEach { election ->
+                electionDatabase.electionDao.getElectionById(election.id).collect { savedElection ->
+                    if (election.id == savedElection.id) {
+                        election.isSaved = savedElection.isSaved
+                    }
+                }
+            }
             electionDatabase.electionDao.insertAll(elections)
         }
     }
