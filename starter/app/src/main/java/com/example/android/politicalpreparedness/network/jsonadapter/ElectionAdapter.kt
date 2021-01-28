@@ -1,3 +1,5 @@
+@file:Suppress("unused", "unused", "unused")
+
 package com.example.android.politicalpreparedness.network.jsonadapter
 
 import com.example.android.politicalpreparedness.network.models.Division

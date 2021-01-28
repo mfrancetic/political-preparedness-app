@@ -42,7 +42,7 @@ class DetailFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
         return binding.root
@@ -198,7 +198,7 @@ class DetailFragment : Fragment() {
 
     private fun geoCodeLocation(location: Location): Address? {
         val geocoder = Geocoder(context, Locale.getDefault())
-        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
+        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
         return addresses
                 .map { address ->
                     if (address.countryCode == "US") {

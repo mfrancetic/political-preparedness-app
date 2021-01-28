@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.example.android.politicalpreparedness.network.models
 
 import com.squareup.moshi.JsonClass
