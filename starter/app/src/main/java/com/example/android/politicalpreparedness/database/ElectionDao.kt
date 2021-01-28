@@ -31,4 +31,7 @@ interface ElectionDao {
 
     @Query("DELETE FROM election_table")
     fun clearAllElections()
+
+    @Query("DELETE FROM election_table WHERE electionDay < :today AND NOT isSaved")
+    fun deletePastUnsavedElections(today: Date)
 }

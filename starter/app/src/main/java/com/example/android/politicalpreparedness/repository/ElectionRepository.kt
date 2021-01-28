@@ -5,6 +5,7 @@ import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
+import com.example.android.politicalpreparedness.utils.getToday
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
@@ -12,6 +13,8 @@ import kotlinx.coroutines.withContext
 class ElectionRepository(private val electionDatabase: ElectionDatabase) {
 
     suspend fun refreshElections() {
+        deletePastUnsavedElections()
+
         val elections: List<Election>
         withContext(Dispatchers.IO) {
             val electionResponse: ElectionResponse = CivicsApi.retrofitService.getElectionsAsync()
@@ -37,5 +40,11 @@ class ElectionRepository(private val electionDatabase: ElectionDatabase) {
             voterInfo = voterInfoResponse
         }
         return voterInfo
+    }
+
+    private suspend fun deletePastUnsavedElections() {
+        withContext(Dispatchers.IO) {
+            electionDatabase.electionDao.deletePastUnsavedElections(getToday())
+        }
     }
 }
