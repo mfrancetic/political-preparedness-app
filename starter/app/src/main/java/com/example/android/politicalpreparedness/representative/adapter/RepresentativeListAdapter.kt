@@ -15,6 +15,8 @@ import com.example.android.politicalpreparedness.databinding.RepresentativesList
 import com.example.android.politicalpreparedness.network.models.Channel
 import com.example.android.politicalpreparedness.representative.model.Representative
 
+const val DISABLED_ICON_ALPHA = 0.33f
+
 class RepresentativeListAdapter : ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepresentativeViewHolder {
@@ -51,11 +53,15 @@ class RepresentativeViewHolder(val binding: RepresentativesListItemBinding) : Re
         val facebookUrl = getFacebookUrl(channels)
         if (!facebookUrl.isNullOrBlank()) {
             enableLink(binding.representativeFacebook, facebookUrl)
+        } else {
+            binding.representativeFacebook.alpha = DISABLED_ICON_ALPHA
         }
 
         val twitterUrl = getTwitterUrl(channels)
         if (!twitterUrl.isNullOrBlank()) {
             enableLink(binding.representativeTwitter, twitterUrl)
+        } else {
+            binding.representativeTwitter.alpha = DISABLED_ICON_ALPHA
         }
     }
 
