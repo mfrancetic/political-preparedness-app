@@ -35,4 +35,8 @@
     <string name="no_voting_locations_available">No voting locations available</string>
     <string name="no_representatives_found">No representatives found</string>
     <string name="no_elections_found">No elections found</string>
+    <string name="launch_fragment">Launch Fragment</string>
+    <string name="representative_fragment">Representative Fragment</string>
+    <string name="voter_info_fragment">Voter Info Fragment</string>
+    <string name="elections_fragment">Elections Fragment</string>
 </resources>

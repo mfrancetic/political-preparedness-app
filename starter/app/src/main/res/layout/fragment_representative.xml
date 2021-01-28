@@ -4,6 +4,7 @@
     xmlns:motion="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="address"
             type="com.example.android.politicalpreparedness.network.models.Address" />
@@ -23,8 +24,6 @@
         <TextView
             android:id="@+id/search_title"
             style="@style/TitleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/representative_search"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -120,8 +119,6 @@
         <Button
             android:id="@+id/button_search"
             style="@style/WideButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:onClick="@{()-> viewModel.onFindMyRepresentativesClicked(address)}"
             android:text="@string/find_my_representatives"
             app:layout_constraintTop_toBottomOf="@id/zip" />
@@ -129,8 +126,6 @@
         <Button
             android:id="@+id/button_location"
             style="@style/WideButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_padding"
             android:onClick="@{()-> viewModel.onUseLocationClicked()}"
             android:text="@string/use_my_location"
@@ -139,18 +134,15 @@
         <TextView
             android:id="@+id/representative_title"
             style="@style/TitleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/my_representatives"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_location" />
 
         <TextView
             android:id="@+id/representative_empty_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:isVisible="@{viewModel.representatives}"
+            style="@style/DefaultTextStyle"
             android:text="@string/no_representatives_found"
+            app:isVisible="@{viewModel.representatives}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/representative_title" />
 

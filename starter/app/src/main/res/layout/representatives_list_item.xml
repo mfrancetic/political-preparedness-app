@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/representative_image"
-            android:layout_width="@dimen/representative_imageview_size"
-            android:layout_height="@dimen/representative_imageview_size"
+            android:layout_width="@dimen/representative_image_view_size"
+            android:layout_height="@dimen/representative_image_view_size"
             android:contentDescription="@string/representative_photo"
             android:src="@drawable/ic_profile"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -30,8 +30,6 @@
         <TextView
             android:id="@+id/representative_title"
             style="@style/VoterInfoTitleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_padding"
             android:text="@{representative.office.name}"
             app:layout_constraintStart_toEndOf="@id/representative_image"
@@ -39,18 +37,16 @@
             tools:text="U.S. Senator" />
 
         <TextView
+            style="@style/DefaultTextStyle"
             android:id="@+id/representative_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@{representative.official.name}"
             app:layout_constraintStart_toStartOf="@id/representative_title"
             app:layout_constraintTop_toBottomOf="@id/representative_title"
             tools:text="Dianne Feinstein" />
 
         <TextView
+            style="@style/DefaultTextStyle"
             android:id="@+id/representative_party"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@{representative.official.party}"
             app:layout_constraintStart_toStartOf="@id/representative_title"
             app:layout_constraintTop_toBottomOf="@id/representative_name"
