@@ -151,7 +151,7 @@
             app:isProgressBarVisible="@{viewModel.isRepresentativeDataLoading()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/representative_title" />
+            app:layout_constraintTop_toBottomOf="@id/button_search" />
 
         <TextView
             android:id="@+id/representative_empty_text_view"
