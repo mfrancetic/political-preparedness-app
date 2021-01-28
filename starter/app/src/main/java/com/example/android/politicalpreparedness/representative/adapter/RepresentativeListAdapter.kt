@@ -1,6 +1,5 @@
 package com.example.android.politicalpreparedness.representative.adapter
 
-//import com.example.android.politicalpreparedness.databinding.ViewholderRepresentativeBinding
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
@@ -97,8 +96,4 @@ class RepresentativeDiffCallback : DiffUtil.ItemCallback<Representative>() {
     override fun areContentsTheSame(oldItem: Representative, newItem: Representative): Boolean {
         return oldItem == newItem
     }
-}
-
-class RepresentativeListener(val clickListener: (representative: Representative) -> Unit) {
-    fun onClick(representative: Representative) = clickListener(representative)
 }
