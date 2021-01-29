@@ -18,25 +18,15 @@ Examples here
 
 ### Installation
 
-Step by step explanation of how to get a dev environment running.
+Add a Google Civic Information API Key to the CivicsHttpClient.kt class, in the network package:
 
-List out the steps
+  private const val API_KEY = GOOGLE_CIVIC_API_KEY
 
-```
-Give an example here
-```
+You can find instructions how to request the API Key here:
 
-## Testing
+https://developers.google.com/civic-information/docs/using_api
 
-Explain the steps needed to run any automated tests
 
-### Break Down Tests
-
-Explain what each test does and why
-
-```
-Examples here
-```
 ## Project Instructions
 
 This section should contain all the student deliverables for this project.
