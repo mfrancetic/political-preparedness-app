@@ -1,42 +1,32 @@
-# README Template
+# Political Preparedness App
 
-Below is a template provided for use when building your README file for students.
-
-# Project Title
-
-Project description goes here.
+Political Preparedness App is an Android App that provides civic data intended to provide educational opportunities to the U.S. electorate using data provided by the Google Civic Information API. The data from this API is used to allow users to track information on target representatives and voting initiatives where applicable. 
 
 ## Getting Started
 
-Instructions for how to get a copy of the project running on your local machine.
+1. Clone the project to your local machine.
+2. Open the project using Android Studio.
+3. Add a Google Civic Information API Key to the CivicsHttpClient.kt class, in the network package:
 
-### Dependencies
-
-```
-Examples here
-```
-
-### Installation
-
-Add a Google Civic Information API Key to the CivicsHttpClient.kt class, in the network package:
-
-  private const val API_KEY = GOOGLE_CIVIC_API_KEY
+private const val API_KEY = GOOGLE_CIVIC_API_KEY
 
 You can find instructions how to request the API Key here:
 
 https://developers.google.com/civic-information/docs/using_api
 
-
-## Project Instructions
-
-This section should contain all the student deliverables for this project.
+4. Run the app on your mobile phone or emulator with Google Play Services in it.
 
 ## Built With
 
-* [Item1](www.item1.com) - Description of item
-* [Item2](www.item2.com) - Description of item
-* [Item3](www.item3.com) - Description of item
-
-Include all items used to build project.
+* [Android Studio](https://developer.android.com/studio) - Default IDE used to build android apps
+* [Kotlin](https://kotlinlang.org/) - Default language used to build this project
+* [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started) - Android Jetpack's Navigation component, used for Fragment-based navigation 
+* [Motion Layout](https://developer.android.com/training/constraint-layout/motionlayout) - MotionLayout, a layout type that helps to manage motion and widget animation, and a subclass of ConstraintLayout
+* [Retrofit](https://github.com/square/retrofit) - a type-safe HTTP client for Android and Java
+* [Moshi](https://github.com/square/moshi) - a modern JSON library for Android and Java, that makes it easy to parse JSON into Java or Kotlin objects
+* [Glide](https://github.com/bumptech/glide) - a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface
+* [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) - a collection of libraries that help design robust, testable, and maintainable apps: Room (a SQLite object mapping library), LiveData (builds data objects that notify views when the underlying database changes), ViewModel (stores UI-related data that isn't destroyed on app rotations)
+* [MVVM](https://developer.android.com/jetpack/guide) - the architecture pattern used in the app (Model-View-ViewModel), that incorporates the Android Architecture Components
 
 ## License
+Please review the following [license agreement](https://bumptech.github.io/glide/dev/open-source-licenses.html)
