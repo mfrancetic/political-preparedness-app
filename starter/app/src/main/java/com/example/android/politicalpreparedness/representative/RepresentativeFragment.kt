@@ -98,7 +98,6 @@ class DetailFragment : Fragment() {
                     message = fragmentContext.getString(R.string.no_representatives_found)
                 }
                 displaySnackbar(requireView(), message)
-                viewModel.snackbarMessageDone()
             }
         })
 

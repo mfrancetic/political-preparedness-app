@@ -65,7 +65,6 @@ class VoterInfoFragment : Fragment() {
                 { url ->
                     if (!url.isNullOrBlank()) {
                         openWebUrl(url)
-                        viewModel.openWebUrlDone()
                     }
                 })
     }

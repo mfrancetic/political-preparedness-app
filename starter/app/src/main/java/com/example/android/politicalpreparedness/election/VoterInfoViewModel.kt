@@ -9,6 +9,7 @@ import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.repository.ElectionRepository
+import com.example.android.politicalpreparedness.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,12 +29,12 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
     val election: LiveData<Election>
         get() = _election
 
-    private val _openWebUrl = MutableLiveData<String>()
-    val openWebUrl: LiveData<String>
+    private val _openWebUrl = SingleLiveEvent<String>()
+    val openWebUrl: SingleLiveEvent<String>
         get() = _openWebUrl
 
-    private val _isVoterInfoDataLoading = MutableLiveData<Boolean>()
-    val isVoterInfoDataLoading: LiveData<Boolean>
+    private val _isVoterInfoDataLoading = SingleLiveEvent<Boolean>()
+    val isVoterInfoDataLoading: SingleLiveEvent<Boolean>
         get() = _isVoterInfoDataLoading
 
     fun getVoterInfo(args: VoterInfoFragmentArgs) {
@@ -63,10 +64,6 @@ class VoterInfoViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun openWebUrl(url: String) {
         _openWebUrl.value = url
-    }
-
-    fun openWebUrlDone() {
-        _openWebUrl.value = null
     }
 
     fun followUnfollowElection() {

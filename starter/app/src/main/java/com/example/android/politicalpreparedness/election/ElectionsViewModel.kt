@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.repository.ElectionRepository
+import com.example.android.politicalpreparedness.utils.SingleLiveEvent
 import com.example.android.politicalpreparedness.utils.getToday
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -25,12 +26,12 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
     val savedElections: LiveData<List<Election>>
         get() = _savedElections
 
-    private val _navigateToVoterInfo = MutableLiveData<Election>()
-    val navigateToVoterInfo: LiveData<Election>
+    private val _navigateToVoterInfo = SingleLiveEvent<Election>()
+    val navigateToVoterInfo: SingleLiveEvent<Election>
         get() = _navigateToVoterInfo
 
-    private val _isElectionDataLoading = MutableLiveData<Boolean>()
-    val isElectionDataLoading: LiveData<Boolean>
+    private val _isElectionDataLoading = SingleLiveEvent<Boolean>()
+    val isElectionDataLoading: SingleLiveEvent<Boolean>
         get() = _isElectionDataLoading
 
     init {
@@ -66,10 +67,6 @@ class ElectionsViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun onElectionSelected(election: Election) {
         _navigateToVoterInfo.value = election
-    }
-
-    fun onElectionSelectedDone() {
-        _navigateToVoterInfo.value = null
     }
 
     private fun setElectionDataLoading(isDataLoading: Boolean) {

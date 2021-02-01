@@ -62,10 +62,8 @@ class ElectionsFragment : Fragment() {
         viewModel.navigateToVoterInfo.observe(viewLifecycleOwner, { election ->
             if (election != null) {
                 navigateToVoterInfoFragment(election)
-                viewModel.onElectionSelectedDone()
             }
         })
-
     }
 
     private fun navigateToVoterInfoFragment(election: Election) {

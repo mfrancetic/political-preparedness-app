@@ -8,6 +8,7 @@ import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.repository.RepresentativesRepository
 import com.example.android.politicalpreparedness.representative.model.Representative
 import com.example.android.politicalpreparedness.utils.ERROR_NO_DATA_FOUND
+import com.example.android.politicalpreparedness.utils.SingleLiveEvent
 import com.example.android.politicalpreparedness.utils.isValid
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -24,20 +25,20 @@ class RepresentativeViewModel : ViewModel() {
     val representatives: LiveData<List<Representative>>
         get() = _representatives
 
-    private val _locationButtonClicked = MutableLiveData<Boolean>()
-    val locationButtonClicked: LiveData<Boolean>
+    private val _locationButtonClicked = SingleLiveEvent<Boolean>()
+    val locationButtonClicked: SingleLiveEvent<Boolean>
         get() = _locationButtonClicked
 
-    private val _snackbarMessage = MutableLiveData<String>()
-    val snackbarMessage: LiveData<String>
+    private val _snackbarMessage = SingleLiveEvent<String>()
+    val snackbarMessage: SingleLiveEvent<String>
         get() = _snackbarMessage
 
-    private val _findRepresentativesButtonClicked = MutableLiveData<Address>()
-    val findRepresentativesButtonClicked: LiveData<Address>
+    private val _findRepresentativesButtonClicked = SingleLiveEvent<Address>()
+    val findRepresentativesButtonClicked: SingleLiveEvent<Address>
         get() = _findRepresentativesButtonClicked
 
-    private val _isRepresentativeDataLoading = MutableLiveData<Boolean>()
-    val isRepresentativeDataLoading: LiveData<Boolean>
+    private val _isRepresentativeDataLoading = SingleLiveEvent<Boolean>()
+    val isRepresentativeDataLoading: SingleLiveEvent<Boolean>
     get() = _isRepresentativeDataLoading
 
     fun onUseLocationClicked() {
@@ -65,10 +66,6 @@ class RepresentativeViewModel : ViewModel() {
 
     fun setSnackbarMessage(message: String) {
         _snackbarMessage.value = message
-    }
-
-    fun snackbarMessageDone() {
-        _snackbarMessage.value = null
     }
 
     private fun getRepresentativesIfAddressValid(address: Address) {
