@@ -8,6 +8,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,7 @@ import com.example.android.politicalpreparedness.utils.ERROR_NO_DATA_FOUND
 import com.example.android.politicalpreparedness.utils.ValidationTextWatcher
 import com.example.android.politicalpreparedness.utils.areAllFieldsValid
 import com.example.android.politicalpreparedness.utils.displaySnackbar
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -39,6 +40,9 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentRepresentativeBinding
     private lateinit var adapter: RepresentativeListAdapter
     private lateinit var fragmentContext: Context
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -62,11 +66,26 @@ class DetailFragment : Fragment() {
         }
 
         fragmentContext = binding.addressLine1.context
+        setupLocationClientAndCallback()
 
         setupRecyclerViewAdapter()
         setupObservers()
         setupStateSpinner()
         addTextChangedListeners()
+    }
+
+    private fun setupLocationClientAndCallback() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        locationRequest = LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    getAddressFromLocation(location)
+                }
+            }
+        }
     }
 
     private fun addTextChangedListeners() {
@@ -181,17 +200,22 @@ class DetailFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        if (isPermissionGranted()) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        if (isPermissionGranted() && isLocationButtonClicked()) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                val address = location?.let { geoCodeLocation(it) }
-                if (address != null) {
-                    viewModel.getAddressFromGeolocation(address)
-                    binding.address = address
-                } else {
-                    displaySnackbar(requireView(), fragmentContext.getString(R.string.location_must_be_in_the_us))
-                }
+                getAddressFromLocation(location)
             }
+            startLocationUpdates()
+        }
+    }
+
+    private fun getAddressFromLocation(location: Location?) {
+        val address = location?.let { geoCodeLocation(it) }
+        if (address != null) {
+            viewModel.getAddressFromGeolocation(address)
+            binding.address = address
+        } else {
+            displaySnackbar(requireView(), fragmentContext.getString(R.string.location_must_be_in_the_us))
         }
     }
 
@@ -218,5 +242,32 @@ class DetailFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(ADDRESS_KEY, binding.address)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isPermissionGranted() && isLocationButtonClicked()) {
+            startLocationUpdates()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper())
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun isLocationButtonClicked(): Boolean {
+        return viewModel.locationButtonClicked.value == true
     }
 }
