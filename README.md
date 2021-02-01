@@ -28,5 +28,15 @@ https://developers.google.com/civic-information/docs/using_api
 * [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) - a collection of libraries that help design robust, testable, and maintainable apps: Room (a SQLite object mapping library), LiveData (builds data objects that notify views when the underlying database changes), ViewModel (stores UI-related data that isn't destroyed on app rotations)
 * [MVVM](https://developer.android.com/jetpack/guide) - the architecture pattern used in the app (Model-View-ViewModel), that incorporates the Android Architecture Components
 
+## App Screenshots
+
+<img src="https://user-images.githubusercontent.com/33599053/106476485-66af1b80-64a7-11eb-8d8e-f74bd6ba716e.png" width=30% height=30%> 
+
+<img src="https://user-images.githubusercontent.com/33599053/106476452-60b93a80-64a7-11eb-9aae-0574cf90fba3.png" width=30% height=30%> 
+
+<img src="https://user-images.githubusercontent.com/33599053/106476476-64e55800-64a7-11eb-81f5-da3928eb9d56.png" width=30% height=30%> 
+
+<img src="https://user-images.githubusercontent.com/33599053/106476491-67e04880-64a7-11eb-9efd-058605e17960.png" width=30% height=30%> 
+
 ## License
 Please review the following [license agreement](https://bumptech.github.io/glide/dev/open-source-licenses.html)
