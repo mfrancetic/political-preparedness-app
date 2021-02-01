@@ -12,10 +12,10 @@ import java.util.*
 interface ElectionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(elections: List<Election>)
+    suspend fun insertAll(elections: List<Election>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(election: Election)
+    suspend fun insert(election: Election)
 
     @Query("SELECT * FROM election_table WHERE electionDay >= :today")
     fun getUpcomingElections(today: Date): Flow<List<Election>>
@@ -26,12 +26,6 @@ interface ElectionDao {
     @Query("SELECT * FROM election_table WHERE id = :electionId")
     fun getElectionById(electionId: Int): Flow<Election>
 
-    @Query("DELETE FROM election_table WHERE id = :electionId")
-    fun deleteElectionById(electionId: Int)
-
-    @Query("DELETE FROM election_table")
-    fun clearAllElections()
-
     @Query("DELETE FROM election_table WHERE electionDay < :today AND NOT isSaved")
-    fun deletePastUnsavedElections(today: Date)
+    suspend fun deletePastUnsavedElections(today: Date)
 }
